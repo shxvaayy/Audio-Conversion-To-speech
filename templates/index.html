@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arali.ai - Client Engagement Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px 0;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #10b981 0%, #6ee7b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .upload-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(16, 185, 129, 0.5);
+            border-radius: 15px;
+            padding: 60px 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #6ee7b7;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #6ee7b7);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .metric-title {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #6ee7b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-subtitle {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .attention-score {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#10b981 0% var(--score), rgba(255,255,255,0.1) var(--score) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .score-inner {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: rgba(15, 12, 41, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: 700;
+        }
+
+        .details-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .section-header {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .timeline-type {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .timeline-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+        }
+
+        .timeline-details {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .timeline-screenshot {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .timeline-screenshot:hover {
+            transform: scale(1.02);
+        }
+
+        .screenshot-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .screenshot-modal.active {
+            display: flex;
+        }
+
+        .screenshot-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <img src="/static/icon.png" alt="Arali.ai" class="header-icon">
+                <h1>Client Engagement Analysis</h1>
+            </div>
+        </header>
+
+        <!-- Upload Section -->
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎥</div>
+                <div class="upload-text">Drop your video or audio file here or click to browse</div>
+                <div class="upload-subtext">Supports MP4, MOV, AVI, MP3, WAV, M4A (max 2GB) • Video: Full analysis • Audio: Transcription + Speaker Diarization</div>
+            </div>
+            <input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/x-msvideo,audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,.mp4,.mov,.avi,.mp3,.wav,.m4a,.ogg,.flac,.aac">
+            <button class="btn" id="uploadBtn" style="display:none;">Analyze Video</button>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progressSection">
+            <h2>Analyzing Video...</h2>
+            <div class="loading-spinner"></div>
+            <div class="status-text" id="statusText">Processing frames and detecting engagement signals...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <!-- Attention Score (Video Only) -->
+            <div class="attention-score" id="scoreSection">
+                <h2>Overall Attention Score</h2>
+                <div class="score-circle" id="scoreCircle" style="--score: 0%">
+                    <div class="score-inner" id="scoreValue">0</div>
+                </div>
+                <p class="subtitle">Based on 12 engagement metrics</p>
+            </div>
+
+            <!-- Video Metrics Grid (Video Only) -->
+            <div class="metrics-grid" id="videoMetricsSection">
+                <div class="metric-card">
+                    <div class="metric-title">👁️ Blinks</div>
+                    <div class="metric-value" id="blinksTotal">0</div>
+                    <div class="metric-subtitle" id="blinksRate">0 per minute</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">😊 Smiles</div>
+                    <div class="metric-value" id="smilesTotal">0</div>
+                    <div class="metric-subtitle" id="smilesDuration">0s total duration</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">👍 Head Nods</div>
+                    <div class="metric-value" id="nodsTotal">0</div>
+                    <div class="metric-subtitle">Agreement signals</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">👎 Head Shakes</div>
+                    <div class="metric-value" id="shakesTotal">0</div>
+                    <div class="metric-subtitle">Disagreement signals</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">👀 Gaze Stability</div>
+                    <div class="metric-value" id="gazeStable">0%</div>
+                    <div class="metric-subtitle">Looking at screen</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">⬆️ Forward Lean</div>
+                    <div class="metric-value" id="leanForward">0%</div>
+                    <div class="metric-subtitle" id="leanEvents">0 lean events</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">⬇️ Backward Lean</div>
+                    <div class="metric-value" id="leanBackward">0%</div>
+                    <div class="metric-subtitle">Disengagement indicator</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-title">😐 Tension Level</div>
+                    <div class="metric-value" id="tensionLevel">50</div>
+                    <div class="metric-subtitle" id="tensionDesc">Neutral</div>
+                </div>
+            </div>
+
+            <!-- Audio Metrics Section -->
+            <div class="details-section" id="audioSection" style="display: none;">
+                <h3 class="section-header">🎵 Audio Analysis</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">🗣️ Speech Rate</div>
+                        <div class="metric-value" id="speechWPM">0</div>
+                        <div class="metric-subtitle" id="speechWPMDesc">words/min</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">⏱️ Speaking Time</div>
+                        <div class="metric-value" id="speakingPercent">0%</div>
+                        <div class="metric-subtitle" id="speakingTime">0s of audio</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">🎵 Pitch Variation</div>
+                        <div class="metric-value" id="pitchScore">0</div>
+                        <div class="metric-subtitle" id="pitchPattern">Unknown</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">🔊 Energy Level</div>
+                        <div class="metric-value" id="energyLevel">0 dB</div>
+                        <div class="metric-subtitle" id="dynamicRange">Dynamic range: 0 dB</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">⏸️ Pauses</div>
+                        <div class="metric-value" id="pauseCount">0</div>
+                        <div class="metric-subtitle" id="pauseAvg">Avg: 0ms</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">🎤 Pitch (Hz)</div>
+                        <div class="metric-value" id="pitchMean">0</div>
+                        <div class="metric-subtitle" id="pitchRange">Range: 0 Hz</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speaker Diarization Section -->
+            <div class="details-section" id="diarizationSection" style="display: none;">
+                <h3 class="section-header">🎭 Speaker Diarization</h3>
+                <p class="diarization-subtitle" id="diarizationStatus" style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">Identifying who spoke when...</p>
+
+                <!-- Speaker Summary -->
+                <div class="metrics-grid" id="speakersGrid">
+                    <!-- Speaker cards will be populated dynamically -->
+                </div>
+
+                <!-- Speaker Timeline -->
+                <div id="speakerTimeline" style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 15px; color: rgba(255,255,255,0.8);">Speaker Timeline</h4>
+                    <div id="timelineBar" style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 40px; position: relative; overflow: hidden;">
+                        <!-- Timeline segments will be populated dynamically -->
+                    </div>
+                    <div id="timelineLegend" style="display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
+                        <!-- Legend items will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Overlaps Info -->
+                <div id="overlapsSection" style="margin-top: 20px; display: none;">
+                    <h4 style="margin-bottom: 10px; color: rgba(255,255,255,0.8);">Overlapping Speech</h4>
+                    <p id="overlapsInfo" style="color: rgba(255,255,255,0.6);"></p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div id="diarizationActions" style="margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn" onclick="viewWholeSpeech()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 12px 24px;">
+                        <span style="margin-right: 8px;">📜</span> View Whole Speech
+                    </button>
+                    <button class="btn" onclick="downloadSpeechText()" style="background: linear-gradient(135deg, #10b981, #059669); padding: 12px 24px;">
+                        <span style="margin-right: 8px;">💾</span> Download Text File
+                    </button>
+                </div>
+
+                <!-- Speech Details Modal -->
+                <div id="speechModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; padding: 40px 20px;">
+                    <div style="max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h2 style="color: #fff; margin: 0;">📜 Complete Speech Timeline</h2>
+                            <button onclick="closeSpeechModal()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px;">&times;</button>
+                        </div>
+                        <div id="speechContent" style="color: rgba(255,255,255,0.9); line-height: 1.8;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Section (Video Events Timeline) -->
+            <div class="details-section" id="videoTimelineSection">
+                <h3 class="section-header">📋 Detailed Timeline</h3>
+                <div id="timeline"></div>
+            </div>
+
+            <button class="btn" onclick="location.reload()">Analyze Another File</button>
+        </div>
+    </div>
+
+    <!-- Screenshot Modal -->
+    <div class="screenshot-modal" id="screenshotModal" onclick="closeModal()">
+        <img id="modalImage" src="" alt="Screenshot">
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const videoFile = document.getElementById('videoFile');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadSection = document.getElementById('uploadSection');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+
+        // Global variables to store data for view/download
+        let currentDiarizationData = null;
+        let currentTranscriptionData = null;
+        const speakerColors = [
+            '#10b981', '#3b82f6', '#f59e0b', '#ef4444',
+            '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'
+        ];
+
+        // Drag and drop
+        uploadArea.addEventListener('click', () => videoFile.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                videoFile.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        });
+
+        videoFile.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect() {
+            if (videoFile.files.length > 0) {
+                const file = videoFile.files[0];
+                uploadArea.querySelector('.upload-text').textContent = `Selected: ${file.name}`;
+                uploadBtn.style.display = 'inline-block';
+            }
+        }
+
+        let progressInterval;
+
+        uploadBtn.addEventListener('click', async () => {
+            const file = videoFile.files[0];
+            if (!file) return;
+
+            // Show progress
+            uploadSection.style.display = 'none';
+            progressSection.style.display = 'block';
+
+            // Generate task ID matching backend format: YYYYMMDD_HHMMSS
+            const now = new Date();
+            const taskId = now.getFullYear().toString() +
+                String(now.getMonth() + 1).padStart(2, '0') +
+                String(now.getDate()).padStart(2, '0') + '_' +
+                String(now.getHours()).padStart(2, '0') +
+                String(now.getMinutes()).padStart(2, '0') +
+                String(now.getSeconds()).padStart(2, '0');
+
+            console.log('Task ID:', taskId);
+
+            // Create form data with task_id so backend uses same ID
+            const formData = new FormData();
+            formData.append('video', file);
+            formData.append('task_id', taskId);  // Send task_id to backend
+
+            // Start polling for progress
+            progressInterval = setInterval(async () => {
+                try {
+                    const progResponse = await fetch(`/progress/${taskId}`);
+                    const progData = await progResponse.json();
+
+                    if (progData.progress !== undefined) {
+                        const progress = Math.round(progData.progress);
+                        document.getElementById('progressFill').style.width = progress + '%';
+                        document.getElementById('progressFill').textContent = progress + '%';
+                        document.getElementById('statusText').textContent = progData.status || 'Processing...';
+                    }
+                } catch (e) {
+                    console.error('Progress error:', e);
+                }
+            }, 500);  // Poll every 500ms (reduced from 300ms for large files)
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                clearInterval(progressInterval);
+
+                // Set progress to 100% when done
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressFill').textContent = '100%';
+                document.getElementById('statusText').textContent = 'Analysis complete!';
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data.results);
+                } else {
+                    alert('Error: ' + data.error);
+                    location.reload();
+                }
+            } catch (error) {
+                clearInterval(progressInterval);
+                console.error('Error:', error);
+                alert('Analysis failed: ' + error.message);
+                location.reload();
+            }
+        });
+
+        function displayResults(results) {
+            // Hide progress, show results
+            progressSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+
+            // Check if this is audio-only (no visual_metrics)
+            const isAudioOnly = !results.visual_metrics;
+
+            // Get video metrics sections
+            const videoMetricsSection = document.getElementById('videoMetricsSection');
+            const scoreSection = document.getElementById('scoreSection');
+            const videoTimelineSection = document.getElementById('videoTimelineSection');
+
+            if (isAudioOnly) {
+                // Hide video-related sections for audio-only files
+                if (videoMetricsSection) videoMetricsSection.style.display = 'none';
+                if (scoreSection) scoreSection.style.display = 'none';
+                if (videoTimelineSection) videoTimelineSection.style.display = 'none';
+                // Update header for audio-only
+                const headerTitle = document.querySelector('h1');
+                if (headerTitle) headerTitle.textContent = 'Audio Analysis';
+            } else {
+                // Show video sections
+                if (videoMetricsSection) videoMetricsSection.style.display = 'block';
+                if (scoreSection) scoreSection.style.display = 'block';
+
+                // Overall score
+                const score = results.overall_score || 0;
+                document.getElementById('scoreValue').textContent = Math.round(score);
+                document.getElementById('scoreCircle').style.setProperty('--score', score + '%');
+
+                // Metrics
+                const visual = results.visual_metrics;
+
+                // Blinks
+                document.getElementById('blinksTotal').textContent = visual.blinks?.total || 0;
+                document.getElementById('blinksRate').textContent = `${(visual.blinks?.per_minute || 0).toFixed(1)} per minute`;
+
+                // Smiles with duration
+                document.getElementById('smilesTotal').textContent = visual.smiles?.total || 0;
+                document.getElementById('smilesDuration').textContent = `${(visual.smiles?.duration_seconds || 0).toFixed(1)}s total duration`;
+
+                // Head gestures
+                document.getElementById('nodsTotal').textContent = visual.head_gestures?.nods || 0;
+                document.getElementById('shakesTotal').textContent = visual.head_gestures?.shakes || 0;
+
+                // Gaze stability
+                document.getElementById('gazeStable').textContent = `${(visual.gaze?.stable_percent || 0).toFixed(1)}%`;
+
+                // Lean metrics (with safe checks for both old and new format)
+                const leanData = visual.lean || {};
+                // Calculate percentages from counts if not provided
+                const totalLean = (leanData.forward || 0) + (leanData.backward || 0) + (leanData.neutral || 0);
+                const forwardPercent = leanData.forward_percent || (totalLean > 0 ? ((leanData.forward || 0) / totalLean * 100) : 0);
+                const backwardPercent = leanData.backward_percent || (totalLean > 0 ? ((leanData.backward || 0) / totalLean * 100) : 0);
+                document.getElementById('leanForward').textContent = `${forwardPercent.toFixed(1)}%`;
+                document.getElementById('leanBackward').textContent = `${backwardPercent.toFixed(1)}%`;
+                const totalLeanEvents = (leanData.forward_events || leanData.forward || 0) + (leanData.backward_events || leanData.backward || 0);
+                document.getElementById('leanEvents').textContent = `${totalLeanEvents} lean events`;
+
+                // Tension level (with safe check)
+                const tensionAvg = visual.tension?.avg_level || 50;
+                document.getElementById('tensionLevel').textContent = Math.round(tensionAvg);
+                let tensionDesc = 'Neutral';
+                if (tensionAvg < 40) tensionDesc = 'Relaxed';
+                else if (tensionAvg > 60) tensionDesc = 'Slightly tense';
+                else if (tensionAvg > 75) tensionDesc = 'Tense';
+                document.getElementById('tensionDesc').textContent = tensionDesc;
+            }
+
+            // Timeline - use detection_events with screenshots
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+
+            // Get detection events from results
+            const detectionEvents = results.detection_events || [];
+
+            if (detectionEvents.length > 0) {
+                // Display events with screenshots (limit to 100 for performance)
+                const displayEvents = detectionEvents.slice(0, 100);
+
+                displayEvents.forEach(event => {
+                    const item = document.createElement('div');
+                    item.className = 'timeline-item';
+
+                    // Get icon and label based on event type
+                    const eventConfig = {
+                        'blink': { icon: '👁️', label: 'Blink Detected', type: 'neutral' },
+                        'smile': { icon: '😊', label: 'Smile Detected', type: 'positive' },
+                        'nod': { icon: '👍', label: 'Head Nod', type: 'positive' },
+                        'shake': { icon: '👎', label: 'Head Shake', type: 'neutral' },
+                        'lean_forward': { icon: '⬆️', label: 'Lean Forward', type: 'positive' },
+                        'lean_backward': { icon: '⬇️', label: 'Lean Backward', type: 'negative' }
+                    };
+
+                    const config = eventConfig[event.type] || { icon: '📍', label: event.type, type: 'neutral' };
+
+                    // Color coding based on event type
+                    let borderColor = 'rgba(255, 255, 255, 0.3)';
+                    if (config.type === 'negative') borderColor = 'rgba(239, 68, 68, 0.5)';
+                    else if (config.type === 'positive') borderColor = 'rgba(16, 185, 129, 0.5)';
+
+                    item.style.borderLeftColor = borderColor;
+
+                    // Build HTML with screenshot
+                    let html = `
+                        <div class="timeline-header">
+                            <span class="timeline-type">${config.icon} ${config.label}</span>
+                            <span class="timeline-time">${formatTime(event.timestamp)}</span>
+                        </div>
+                    `;
+
+                    if (event.details) {
+                        html += `<div class="timeline-details">${event.details}</div>`;
+                    }
+
+                    if (event.screenshot) {
+                        html += `<img src="${event.screenshot}" class="timeline-screenshot" onclick="openModal('${event.screenshot}')" onerror="this.style.display='none'" alt="Detection screenshot">`;
+                    }
+
+                    item.innerHTML = html;
+                    timeline.appendChild(item);
+                });
+
+                if (detectionEvents.length > 100) {
+                    const moreItem = document.createElement('div');
+                    moreItem.className = 'timeline-item';
+                    moreItem.style.textAlign = 'center';
+                    moreItem.style.color = 'rgba(255,255,255,0.6)';
+                    moreItem.textContent = `... and ${detectionEvents.length - 100} more events`;
+                    timeline.appendChild(moreItem);
+                }
+            } else {
+                timeline.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);">No significant events detected. Check metrics above for summary.</p>';
+            }
+
+            // Show calibration info if available
+            if (results.calibration_info) {
+                console.log('Calibration Info:', results.calibration_info);
+            }
+
+            // Audio Metrics
+            if (results.audio_metrics && results.audio_metrics.success) {
+                const audio = results.audio_metrics;
+                document.getElementById('audioSection').style.display = 'block';
+
+                // Speech Rate
+                const wpm = audio.speech_rate?.wpm || 0;
+                document.getElementById('speechWPM').textContent = Math.round(wpm);
+                let wpmDesc = 'words/min';
+                if (wpm > 0) {
+                    if (wpm < 100) wpmDesc = 'Slow pace';
+                    else if (wpm < 140) wpmDesc = 'Normal pace';
+                    else if (wpm < 170) wpmDesc = 'Moderate pace';
+                    else wpmDesc = 'Fast pace';
+                }
+                document.getElementById('speechWPMDesc').textContent = wpmDesc;
+
+                // Speaking Time
+                const speakingPct = audio.voice_activity?.speaking_percent || 0;
+                const totalSpeaking = audio.voice_activity?.total_speaking_seconds || 0;
+                document.getElementById('speakingPercent').textContent = speakingPct.toFixed(1) + '%';
+                document.getElementById('speakingTime').textContent = totalSpeaking.toFixed(1) + 's of speech';
+
+                // Pitch Variation
+                const pitchVar = audio.prosody?.variation_score || 0;
+                document.getElementById('pitchScore').textContent = pitchVar.toFixed(1);
+                let pitchPattern = 'Unknown';
+                const pattern = audio.prosody?.pattern || '';
+                if (pattern === 'monotone') pitchPattern = 'Monotone';
+                else if (pattern === 'varied') pitchPattern = 'Normal variation';
+                else if (pattern === 'expressive') pitchPattern = 'Expressive';
+                document.getElementById('pitchPattern').textContent = pitchPattern;
+
+                // Energy Level
+                const meanDb = audio.energy?.mean_db || 0;
+                const dynRange = audio.energy?.dynamic_range_db || 0;
+                document.getElementById('energyLevel').textContent = meanDb.toFixed(1) + ' dB';
+                document.getElementById('dynamicRange').textContent = 'Dynamic range: ' + dynRange.toFixed(1) + ' dB';
+
+                // Pauses
+                const pauseCnt = audio.pauses?.count || 0;
+                const pauseAvgMs = audio.pauses?.avg_duration_ms || 0;
+                document.getElementById('pauseCount').textContent = pauseCnt;
+                document.getElementById('pauseAvg').textContent = 'Avg: ' + Math.round(pauseAvgMs) + 'ms';
+
+                // Pitch Hz
+                const pitchMeanHz = audio.prosody?.mean_pitch_hz || 0;
+                const pitchMinHz = audio.prosody?.min_pitch_hz || 0;
+                const pitchMaxHz = audio.prosody?.max_pitch_hz || 0;
+                document.getElementById('pitchMean').textContent = Math.round(pitchMeanHz);
+                document.getElementById('pitchRange').textContent = 'Range: ' + Math.round(pitchMinHz) + '-' + Math.round(pitchMaxHz) + ' Hz';
+            } else {
+                document.getElementById('audioSection').style.display = 'none';
+            }
+
+            // Speaker Diarization
+            if (results.speaker_diarization && results.speaker_diarization.success) {
+                const diar = results.speaker_diarization;
+                // Store diarization data globally for view/download functions
+                currentDiarizationData = diar;
+
+                // Store transcription data if available
+                if (results.transcription && results.transcription.success) {
+                    currentTranscriptionData = results.transcription;
+                }
+
+                document.getElementById('diarizationSection').style.display = 'block';
+                document.getElementById('diarizationStatus').textContent =
+                    `Detected ${diar.num_speakers} speaker${diar.num_speakers > 1 ? 's' : ''} in ${diar.total_duration.toFixed(1)}s of audio`;
+
+                // Speaker colors - using global speakerColors
+                const localSpeakerColors = [
+                    '#10b981', // Green
+                    '#3b82f6', // Blue
+                    '#f59e0b', // Orange
+                    '#ef4444', // Red
+                    '#8b5cf6', // Purple
+                    '#ec4899', // Pink
+                    '#14b8a6', // Teal
+                    '#f97316'  // Amber
+                ];
+
+                // Create speaker cards
+                const speakersGrid = document.getElementById('speakersGrid');
+                speakersGrid.innerHTML = '';
+
+                const speakerIds = Object.keys(diar.speakers);
+                speakerIds.forEach((speakerId, index) => {
+                    const speaker = diar.speakers[speakerId];
+                    const color = speakerColors[index % speakerColors.length];
+
+                    const card = document.createElement('div');
+                    card.className = 'metric-card';
+                    card.style.borderLeftColor = color;
+                    card.style.borderLeftWidth = '4px';
+                    card.innerHTML = `
+                        <div class="metric-title" style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; background: ${color}; border-radius: 50%;"></span>
+                            ${speakerId.replace('SPEAKER_', 'Speaker ')}
+                        </div>
+                        <div class="metric-value">${speaker.percent.toFixed(1)}%</div>
+                        <div class="metric-subtitle">${speaker.speaking_time.toFixed(1)}s • ${speaker.segments_count} segments</div>
+                    `;
+                    speakersGrid.appendChild(card);
+                });
+
+                // Create timeline bar
+                const timelineBar = document.getElementById('timelineBar');
+                timelineBar.innerHTML = '';
+                const totalDuration = diar.total_duration;
+
+                // Sort timeline by start time
+                const sortedTimeline = [...diar.timeline].sort((a, b) => a.start - b.start);
+
+                sortedTimeline.forEach(segment => {
+                    const speakerIndex = speakerIds.indexOf(segment.speaker);
+                    const color = speakerColors[speakerIndex % speakerColors.length];
+
+                    const left = (segment.start / totalDuration) * 100;
+                    const width = ((segment.end - segment.start) / totalDuration) * 100;
+
+                    const segmentEl = document.createElement('div');
+                    segmentEl.style.cssText = `
+                        position: absolute;
+                        left: ${left}%;
+                        width: ${width}%;
+                        height: 100%;
+                        background: ${color};
+                        opacity: 0.8;
+                    `;
+                    segmentEl.title = `${segment.speaker.replace('SPEAKER_', 'Speaker ')}: ${formatTime(segment.start)} - ${formatTime(segment.end)}`;
+                    timelineBar.appendChild(segmentEl);
+                });
+
+                // Create legend
+                const timelineLegend = document.getElementById('timelineLegend');
+                timelineLegend.innerHTML = '';
+                speakerIds.forEach((speakerId, index) => {
+                    const color = speakerColors[index % speakerColors.length];
+                    const legendItem = document.createElement('div');
+                    legendItem.style.cssText = 'display: flex; align-items: center; gap: 6px;';
+                    legendItem.innerHTML = `
+                        <span style="width: 12px; height: 12px; background: ${color}; border-radius: 3px;"></span>
+                        <span style="color: rgba(255,255,255,0.7);">${speakerId.replace('SPEAKER_', 'Speaker ')}</span>
+                    `;
+                    timelineLegend.appendChild(legendItem);
+                });
+
+                // Show overlaps if any
+                if (diar.overlaps && diar.overlaps.length > 0) {
+                    document.getElementById('overlapsSection').style.display = 'block';
+                    const totalOverlapDuration = diar.overlaps.reduce((sum, o) => sum + o.duration, 0);
+                    document.getElementById('overlapsInfo').textContent =
+                        `${diar.overlaps.length} overlapping segments detected (${totalOverlapDuration.toFixed(1)}s total). Multiple speakers talking at the same time.`;
+                }
+            } else {
+                // Hide diarization section if not available (no HF_TOKEN or error)
+                // Don't show error to user - just hide the section gracefully
+                document.getElementById('diarizationSection').style.display = 'none';
+            }
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Modal functions for screenshot viewing
+        function openModal(imageSrc) {
+            const modal = document.getElementById('screenshotModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('screenshotModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeSpeechModal();
+            }
+        });
+
+        // View Whole Speech function
+        function viewWholeSpeech() {
+            if (!currentDiarizationData && !currentTranscriptionData) {
+                alert('No speech data available');
+                return;
+            }
+
+            const diar = currentDiarizationData;
+            const trans = currentTranscriptionData;
+            const speakerIds = diar ? Object.keys(diar.speakers) : [];
+
+            let html = '';
+
+            // If we have transcription with aligned segments (speaker + text), show that
+            if (trans && trans.aligned_segments && trans.aligned_segments.length > 0) {
+                // Summary section
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 25px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #10b981;">Summary</h3>`;
+                html += `<p style="margin: 5px 0;"><strong>Total Duration:</strong> ${diar ? formatTime(diar.total_duration) : 'N/A'}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Speakers Detected:</strong> ${diar ? diar.num_speakers : 'N/A'}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Language:</strong> ${trans.language || 'Auto-detected'}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Speech Segments:</strong> ${trans.aligned_segments.length}</p>`;
+                html += `</div>`;
+
+                // Full Transcript with Speaker Labels
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #f59e0b;">Full Transcript</h3>`;
+
+                trans.aligned_segments.forEach((segment, index) => {
+                    const speakerIndex = speakerIds.indexOf(segment.speaker);
+                    const color = speakerIndex >= 0 ? speakerColors[speakerIndex % speakerColors.length] : '#888';
+
+                    html += `<div style="margin: 12px 0; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid ${color};">`;
+                    html += `<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">`;
+                    html += `<span style="color: ${color}; font-weight: 600;">${segment.speaker.replace('SPEAKER_', 'Speaker ')}</span>`;
+                    html += `<span style="color: rgba(255,255,255,0.5); font-size: 0.9em;">${formatTime(segment.start)} - ${formatTime(segment.end)}</span>`;
+                    html += `</div>`;
+                    html += `<p style="margin: 0; color: rgba(255,255,255,0.9); line-height: 1.6;">"${segment.text}"</p>`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+
+            } else if (trans && trans.segments && trans.segments.length > 0) {
+                // Transcription without speaker alignment
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 25px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #10b981;">Summary</h3>`;
+                html += `<p style="margin: 5px 0;"><strong>Language:</strong> ${trans.language || 'Auto-detected'}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Speech Segments:</strong> ${trans.segments.length}</p>`;
+                html += `</div>`;
+
+                // Full Transcript
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #f59e0b;">Full Transcript</h3>`;
+
+                trans.segments.forEach((segment) => {
+                    html += `<div style="margin: 12px 0; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #3b82f6;">`;
+                    html += `<div style="color: rgba(255,255,255,0.5); font-size: 0.9em; margin-bottom: 8px;">${formatTime(segment.start)} - ${formatTime(segment.end)}</div>`;
+                    html += `<p style="margin: 0; color: rgba(255,255,255,0.9); line-height: 1.6;">"${segment.text}"</p>`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+
+            } else if (diar) {
+                // Only diarization data (no transcription)
+                const sortedTimeline = [...diar.timeline].sort((a, b) => a.start - b.start);
+
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 25px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #10b981;">Summary</h3>`;
+                html += `<p style="margin: 5px 0;"><strong>Total Duration:</strong> ${formatTime(diar.total_duration)}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Speakers Detected:</strong> ${diar.num_speakers}</p>`;
+                html += `<p style="margin: 5px 0;"><strong>Total Segments:</strong> ${sortedTimeline.length}</p>`;
+                html += `<p style="margin: 5px 0; color: #f59e0b;"><em>Note: Speech transcription not available</em></p>`;
+                html += `</div>`;
+
+                // Speaker breakdown
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 25px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #3b82f6;">Speaker Breakdown</h3>`;
+                speakerIds.forEach((speakerId, index) => {
+                    const speaker = diar.speakers[speakerId];
+                    const color = speakerColors[index % speakerColors.length];
+                    html += `<div style="display: flex; align-items: center; gap: 10px; margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">`;
+                    html += `<span style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0;"></span>`;
+                    html += `<span style="flex: 1;"><strong>${speakerId.replace('SPEAKER_', 'Speaker ')}</strong></span>`;
+                    html += `<span style="color: rgba(255,255,255,0.7);">${speaker.speaking_time.toFixed(1)}s (${speaker.percent.toFixed(1)}%)</span>`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+
+                // Timeline without text
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">`;
+                html += `<h3 style="margin: 0 0 15px 0; color: #f59e0b;">Speaker Timeline</h3>`;
+
+                sortedTimeline.forEach((segment, index) => {
+                    const speakerIndex = speakerIds.indexOf(segment.speaker);
+                    const color = speakerColors[speakerIndex % speakerColors.length];
+                    html += `<div style="display: flex; align-items: center; gap: 15px; margin: 8px 0; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid ${color};">`;
+                    html += `<span style="color: ${color}; font-weight: 600;">${segment.speaker.replace('SPEAKER_', 'Speaker ')}</span>`;
+                    html += `<span style="color: rgba(255,255,255,0.6);">${formatTime(segment.start)} - ${formatTime(segment.end)}</span>`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+            }
+
+            document.getElementById('speechContent').innerHTML = html;
+            document.getElementById('speechModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Speech Modal
+        function closeSpeechModal() {
+            document.getElementById('speechModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Download Speech Text File
+        function downloadSpeechText() {
+            if (!currentDiarizationData && !currentTranscriptionData) {
+                alert('No speech data available');
+                return;
+            }
+
+            const diar = currentDiarizationData;
+            const trans = currentTranscriptionData;
+            const speakerIds = diar ? Object.keys(diar.speakers) : [];
+
+            let text = '='.repeat(60) + '\n';
+            text += '          SPEECH TRANSCRIPT REPORT\n';
+            text += '          Generated by Arali.ai Video Analyzer\n';
+            text += '='.repeat(60) + '\n\n';
+
+            // Summary
+            text += 'SUMMARY\n';
+            text += '-'.repeat(40) + '\n';
+            if (diar) {
+                text += `Total Duration: ${formatTime(diar.total_duration)}\n`;
+                text += `Speakers Detected: ${diar.num_speakers}\n`;
+            }
+            if (trans) {
+                text += `Language: ${trans.language || 'Auto-detected'}\n`;
+            }
+            text += '\n';
+
+            // Speaker breakdown if available
+            if (diar) {
+                text += 'SPEAKER BREAKDOWN\n';
+                text += '-'.repeat(40) + '\n';
+                speakerIds.forEach((speakerId) => {
+                    const speaker = diar.speakers[speakerId];
+                    text += `${speakerId.replace('SPEAKER_', 'Speaker ')}: ${speaker.speaking_time.toFixed(1)}s (${speaker.percent.toFixed(1)}%)\n`;
+                });
+                text += '\n';
+            }
+
+            // Full transcript with speaker labels
+            if (trans && trans.aligned_segments && trans.aligned_segments.length > 0) {
+                text += 'FULL TRANSCRIPT\n';
+                text += '-'.repeat(40) + '\n\n';
+
+                trans.aligned_segments.forEach((segment, index) => {
+                    text += `[${formatTime(segment.start)} - ${formatTime(segment.end)}] ${segment.speaker.replace('SPEAKER_', 'Speaker ')}:\n`;
+                    text += `"${segment.text}"\n\n`;
+                });
+
+            } else if (trans && trans.segments && trans.segments.length > 0) {
+                text += 'FULL TRANSCRIPT\n';
+                text += '-'.repeat(40) + '\n\n';
+
+                trans.segments.forEach((segment) => {
+                    text += `[${formatTime(segment.start)} - ${formatTime(segment.end)}]\n`;
+                    text += `"${segment.text}"\n\n`;
+                });
+
+            } else if (diar) {
+                // Only timeline without text
+                const sortedTimeline = [...diar.timeline].sort((a, b) => a.start - b.start);
+                text += 'SPEAKER TIMELINE (No transcription available)\n';
+                text += '-'.repeat(40) + '\n';
+                sortedTimeline.forEach((segment, index) => {
+                    const duration = (segment.end - segment.start).toFixed(1);
+                    text += `${(index + 1).toString().padStart(3, ' ')}. ${segment.speaker.replace('SPEAKER_', 'Speaker ').padEnd(12)} | ${formatTime(segment.start)} - ${formatTime(segment.end)} | ${duration}s\n`;
+                });
+            }
+
+            // Full text at the end
+            if (trans && trans.text) {
+                text += '\n' + '='.repeat(60) + '\n';
+                text += 'PLAIN TEXT (Complete)\n';
+                text += '-'.repeat(40) + '\n';
+                text += trans.text + '\n';
+            }
+
+            text += '\n' + '='.repeat(60) + '\n';
+            text += 'End of Report\n';
+
+            // Create and download file
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `speech_transcript_${new Date().toISOString().slice(0,10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
