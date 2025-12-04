@@ -62,17 +62,40 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up environment variables
-```bash
-cp .env.example .env
-# Edit .env and add your HuggingFace token
-```
+### 4. Set up HuggingFace Token (IMPORTANT!)
 
-Get your HuggingFace token from: https://huggingface.co/settings/tokens
+Speaker diarization requires a HuggingFace token to download the PyAnnote models.
 
-**Important:** You need to accept the PyAnnote model terms:
+#### Step 1: Create HuggingFace Account
+Go to https://huggingface.co/join and create a free account.
+
+#### Step 2: Accept PyAnnote Model Terms
+You MUST accept the terms for these two models (click each link, login, and click "Agree"):
 - https://huggingface.co/pyannote/speaker-diarization-3.1
 - https://huggingface.co/pyannote/segmentation-3.0
+
+#### Step 3: Get Your Access Token
+1. Go to https://huggingface.co/settings/tokens
+2. Click "New token"
+3. Give it a name (e.g., "audio-analyzer")
+4. Select "Read" permission
+5. Click "Generate token"
+6. Copy the token (starts with `hf_...`)
+
+#### Step 4: Create .env file
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit the .env file and add your token
+nano .env  # or use any text editor
+```
+
+Your `.env` file should look like this:
+```
+HF_TOKEN=hf_your_token_here
+HUGGINGFACE_TOKEN=hf_your_token_here
+```
 
 ### 5. Run the application
 ```bash
@@ -80,6 +103,24 @@ python app.py
 ```
 
 Open http://localhost:5001 in your browser.
+
+## Troubleshooting
+
+### "Access denied" or "401 Unauthorized" error
+- Make sure you accepted the PyAnnote model terms (Step 2)
+- Check that your token is correct in the `.env` file
+- Token must start with `hf_`
+
+### "No module named..." error
+```bash
+pip install -r requirements.txt
+```
+
+### FFmpeg not found
+Install FFmpeg:
+- **Mac**: `brew install ffmpeg`
+- **Ubuntu**: `sudo apt install ffmpeg`
+- **Windows**: Download from https://ffmpeg.org/download.html
 
 ## Usage
 
